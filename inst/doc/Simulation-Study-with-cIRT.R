@@ -1,4 +1,4 @@
-## ----sim_setup, eval = F-------------------------------------------------
+## ----sim_setup, eval = F------------------------------------------------------
 #  ### Variables
 #  # Y = trial matix
 #  # C = KN vector of binary choices
@@ -105,7 +105,7 @@
 #    rm(list = c(mname,"out1"))
 #  }
 
-## ----sim_results, eval = F-----------------------------------------------
+## ----sim_results, eval = F----------------------------------------------------
 #  # E[theta] - theta
 #  bias = function(theta.star, theta.true){
 #    matrix(mean(theta.star) - theta.true,ncol=1)
@@ -198,7 +198,7 @@
 #  
 #  sig_RMSE = RMSE(m_sig_result, Sig)
 
-## ----out, eval = F-------------------------------------------------------
+## ----out, eval = F------------------------------------------------------------
 #  # Make a results export
 #  results_a = cbind(m_a_result, atrue, a_bias, a_RMSE)
 #  

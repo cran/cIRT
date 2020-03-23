@@ -1,11 +1,11 @@
-## ----load_pkg------------------------------------------------------------
+## ----load_pkg-----------------------------------------------------------------
 library(cIRT)
 
-## ----load_data-----------------------------------------------------------
+## ----load_data----------------------------------------------------------------
 data(trial_matrix)
 data(choice_matrix)
 
-## ----thurstone_design----------------------------------------------------
+## ----thurstone_design---------------------------------------------------------
 # Create the Thurstone Design Matrices
 hard_items = choice_matrix$hard_q_id
 easy_items = choice_matrix$easy_q_id
@@ -13,7 +13,7 @@ easy_items = choice_matrix$easy_q_id
 D_easy = model.matrix( ~ -1 + factor(easy_items))
 D_hard = -1 * model.matrix( ~ -1 + factor(hard_items))[, -c(5, 10, 15)]
 
-## ----effect_coding-------------------------------------------------------
+## ----effect_coding------------------------------------------------------------
 # Defining effect-coded contrasts
 high_contrasts = rbind(-1, diag(4))
 rownames(high_contrasts) = 12:16
@@ -30,7 +30,7 @@ fixed_effects = model.matrix( ~ high + low)
 fixed_effects_base = fixed_effects[, 1]
 fixed_effects_int = model.matrix( ~ high * low)
 
-## ----model_data----------------------------------------------------------
+## ----model_data---------------------------------------------------------------
 # Model with Thurstone D matrix
 system.time({
   out_model_thurstone = cIRT(
@@ -45,7 +45,7 @@ system.time({
   )
 })
 
-## ----param_ests----------------------------------------------------------
+## ----param_ests---------------------------------------------------------------
 vlabels_thurstone = colnames(cbind(fixed_effects[, -1], D_easy, D_hard))
 
 G_thurstone = t(apply(
@@ -76,7 +76,7 @@ corrmat = inv_sd %*% S_thurstone %*% inv_sd
 as = apply(out_model_thurstone$as, 2, FUN = mean)
 bs = apply(out_model_thurstone$bs, 2, FUN = mean)
 
-## ----param_results-------------------------------------------------------
+## ----param_results------------------------------------------------------------
 # gs0
 G_thurstone
 # betas

@@ -1,3 +1,21 @@
+# cIRT 1.3.1
+
+## Changes
+
+- Added `LazyData: true` to `DESCRIPTION` to match with how the data 
+  documentation is called. 
+  ([#3](https://github.com/tmsalab/cIRT/pull/3))
+
+## Documentation
+
+- Added a `pkgdown` website that deploys to <https://tmsalab.github.io/cIRT>.
+  ([#3](https://github.com/tmsalab/cIRT/pull/3))
+
+## Deployment
+
+- Switched from Travis-CI to GitHub Actions for R.
+  ([#5](https://github.com/tmsalab/cIRT/pull/5))
+
 # cIRT 1.3.0
 
 ## Changes
@@ -36,7 +54,7 @@
 # cIRT 1.0.0
 
 ## Modeling Framework
-- Implementation of the hiercharical framework described in "A Hierarchical Model for Accuracy and Choice on Standardized Tests"
+- Implementation of the hierarchical framework described in "A Hierarchical Model for Accuracy and Choice on Standardized Tests"
 - Specifically, a choice inclusive Probit HLM and a Two Parameter Ogive Model.
 
 ## C++ Functions

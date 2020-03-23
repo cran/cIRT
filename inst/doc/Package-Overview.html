@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2019-01-23" />
+<meta name="date" content="2020-03-22" />
 
 <title>Package Overview</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 
 
@@ -30,9 +43,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -201,8 +211,12 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
+
+
 
 </head>
 
@@ -212,17 +226,17 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Package Overview</h1>
-<h4 class="date"><em>2019-01-23</em></h4>
+<h4 class="date">2020-03-22</h4>
 
 
 
 <div id="intro" class="section level1">
 <h1>Intro</h1>
-<p>The package is a companion to the paper A hierarchical model for accuracy and choice on standardized tests in <a href="http://link.springer.com/article/10.1007/s11336-015-9484-7">Psychometrika</a> written by Culpepper, S. A. &amp; Balamuta, J. J. Within this package, we make available the code used for the analysis within the paper as well as the data.</p>
+<p>The package is a companion to the paper “A hierarchical model for accuracy and choice on standardized tests” in <a href="http://link.springer.com/article/10.1007/s11336-015-9484-7">Psychometrika</a> written by Culpepper, S. A. &amp; Balamuta, J. J. Within this package, we make available the code used for the analysis within the paper as well as the data.</p>
 </div>
 <div id="functions" class="section level1">
 <h1>Functions</h1>
-<p>The package provides C++ implementations of the hierarchial bayesian modeling framework for choice. The primary functions that are novel contributions to psychometric literature are the <code>probitHLM()</code> and <code>TwoPLChoicemcmc()</code> that respectively provide a choice inclusive Probit HLM and a Two Parameter Ogive Model and are called by an overall wrapper function <code>cIRT()</code>. These functions do have an overall dependency on other components that have also been coded within C++ and may benefit a practitioner seeking to do use the same functionality elsewhere.</p>
+<p>The package provides C++ implementations of the hierarchical bayesian modeling framework for choice. The primary functions that are novel contributions to psychometric literature are the <code>probitHLM()</code> and <code>TwoPLChoicemcmc()</code> that respectively provide a choice inclusive Probit HLM and a Two Parameter Ogive Model and are called by an overall wrapper function <code>cIRT()</code>. These functions do have an overall dependency on other components that have also been coded within C++ and may benefit a practitioner seeking to do use the same functionality elsewhere.</p>
 <ul>
 <li>Random Number Generation for the following distributions: Wishart <code>rwishart()</code>, Inverse Wishart <code>riwishart()</code>, and Multivariate Normal <code>rmvnorm()</code>.</li>
 <li>Matrix Centering <code>center_matrix()</code></li>
@@ -242,6 +256,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </ul>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

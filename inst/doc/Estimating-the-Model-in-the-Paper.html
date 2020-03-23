@@ -1,44 +1,58 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2019-01-23" />
+<meta name="date" content="2020-03-22" />
 
 <title>Estimating the Model in the Paper</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -47,9 +61,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -95,7 +109,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -116,9 +130,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -287,8 +298,12 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
+
+
 
 </head>
 
@@ -298,7 +313,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Estimating the Model in the Paper</h1>
-<h4 class="date"><em>2019-01-23</em></h4>
+<h4 class="date">2020-03-22</h4>
 
 
 
@@ -308,56 +323,56 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 <div id="data" class="section level1">
 <h1>Data</h1>
-<p>Within this vignette, we used two different data sets to generate a Choice Item Response Theory Model with the rountine located in <code>cIRT</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(cIRT)</a></code></pre></div>
+<p>Within this vignette, we used two different data sets to generate a Choice Item Response Theory Model with the routine located in <code>cIRT</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(cIRT)</span></code></pre></div>
 <p>The first data set, <code>trial_matrix</code>, contains whether or not the subject correctly identified the spatial rotation. The second dataset, <code>choice_matrix</code>, provides information regarding the choice decision subjects were asked to make.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">data</span>(trial_matrix)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw">data</span>(choice_matrix)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">data</span>(trial_matrix)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">data</span>(choice_matrix)</span></code></pre></div>
 </div>
 <div id="constructing-the-model-matrix" class="section level1">
 <h1>Constructing the Model Matrix</h1>
 <p>Here we construct a thurstone design matrix by obtaining the IDs of hard and easy questions presented for the subject to make a decision upon.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Create the Thurstone Design Matrices</span></a>
-<a class="sourceLine" id="cb3-2" title="2">hard_items =<span class="st"> </span>choice_matrix<span class="op">$</span>hard_q_id</a>
-<a class="sourceLine" id="cb3-3" title="3">easy_items =<span class="st"> </span>choice_matrix<span class="op">$</span>easy_q_id</a>
-<a class="sourceLine" id="cb3-4" title="4"></a>
-<a class="sourceLine" id="cb3-5" title="5">D_easy =<span class="st"> </span><span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(easy_items))</a>
-<a class="sourceLine" id="cb3-6" title="6">D_hard =<span class="st"> </span><span class="dv">-1</span> <span class="op">*</span><span class="st"> </span><span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(hard_items))[, <span class="op">-</span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>)]</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Create the Thurstone Design Matrices</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>hard_items =<span class="st"> </span>choice_matrix<span class="op">$</span>hard_q_id</span>
+<span id="cb3-3"><a href="#cb3-3"></a>easy_items =<span class="st"> </span>choice_matrix<span class="op">$</span>easy_q_id</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a>D_easy =<span class="st"> </span><span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(easy_items))</span>
+<span id="cb3-6"><a href="#cb3-6"></a>D_hard =<span class="st"> </span><span class="dv">-1</span> <span class="op">*</span><span class="st"> </span><span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(hard_items))[, <span class="op">-</span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>)]</span></code></pre></div>
 <p>Within this setting, we setup the effect-codes for different constraints.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># Defining effect-coded contrasts</span></a>
-<a class="sourceLine" id="cb4-2" title="2">high_contrasts =<span class="st"> </span><span class="kw">rbind</span>(<span class="op">-</span><span class="dv">1</span>, <span class="kw">diag</span>(<span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="kw">rownames</span>(high_contrasts) =<span class="st"> </span><span class="dv">12</span><span class="op">:</span><span class="dv">16</span></a>
-<a class="sourceLine" id="cb4-4" title="4">low_contrasts =<span class="st"> </span><span class="kw">rbind</span>(<span class="op">-</span><span class="dv">1</span>, <span class="kw">diag</span>(<span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="kw">rownames</span>(low_contrasts) =<span class="st"> </span><span class="dv">4</span><span class="op">:</span><span class="dv">6</span></a>
-<a class="sourceLine" id="cb4-6" title="6"></a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="co"># Creating high &amp; low factors</span></a>
-<a class="sourceLine" id="cb4-8" title="8">high =<span class="st"> </span><span class="kw">factor</span>(choice_matrix[, <span class="st">&#39;high_value&#39;</span>])</a>
-<a class="sourceLine" id="cb4-9" title="9">low =<span class="st"> </span><span class="kw">factor</span>(choice_matrix[, <span class="st">&#39;low_value&#39;</span>])</a>
-<a class="sourceLine" id="cb4-10" title="10"><span class="kw">contrasts</span>(high) =<span class="st"> </span>high_contrasts</a>
-<a class="sourceLine" id="cb4-11" title="11"><span class="kw">contrasts</span>(low) =<span class="st"> </span>low_contrasts</a>
-<a class="sourceLine" id="cb4-12" title="12"></a>
-<a class="sourceLine" id="cb4-13" title="13">fixed_effects =<span class="st"> </span><span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span>high <span class="op">+</span><span class="st"> </span>low)</a>
-<a class="sourceLine" id="cb4-14" title="14">fixed_effects_base =<span class="st"> </span>fixed_effects[, <span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb4-15" title="15">fixed_effects_int =<span class="st"> </span><span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span>high <span class="op">*</span><span class="st"> </span>low)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Defining effect-coded contrasts</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>high_contrasts =<span class="st"> </span><span class="kw">rbind</span>(<span class="op">-</span><span class="dv">1</span>, <span class="kw">diag</span>(<span class="dv">4</span>))</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">rownames</span>(high_contrasts) =<span class="st"> </span><span class="dv">12</span><span class="op">:</span><span class="dv">16</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>low_contrasts =<span class="st"> </span><span class="kw">rbind</span>(<span class="op">-</span><span class="dv">1</span>, <span class="kw">diag</span>(<span class="dv">2</span>))</span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="kw">rownames</span>(low_contrasts) =<span class="st"> </span><span class="dv">4</span><span class="op">:</span><span class="dv">6</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># Creating high &amp; low factors</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>high =<span class="st"> </span><span class="kw">factor</span>(choice_matrix[, <span class="st">&#39;high_value&#39;</span>])</span>
+<span id="cb4-9"><a href="#cb4-9"></a>low =<span class="st"> </span><span class="kw">factor</span>(choice_matrix[, <span class="st">&#39;low_value&#39;</span>])</span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="kw">contrasts</span>(high) =<span class="st"> </span>high_contrasts</span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="kw">contrasts</span>(low) =<span class="st"> </span>low_contrasts</span>
+<span id="cb4-12"><a href="#cb4-12"></a></span>
+<span id="cb4-13"><a href="#cb4-13"></a>fixed_effects =<span class="st"> </span><span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span>high <span class="op">+</span><span class="st"> </span>low)</span>
+<span id="cb4-14"><a href="#cb4-14"></a>fixed_effects_base =<span class="st"> </span>fixed_effects[, <span class="dv">1</span>]</span>
+<span id="cb4-15"><a href="#cb4-15"></a>fixed_effects_int =<span class="st"> </span><span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span>high <span class="op">*</span><span class="st"> </span>low)</span></code></pre></div>
 </div>
 <div id="modeling-the-data" class="section level1">
 <h1>Modeling the Data</h1>
 <p>Generate the cIRT model using a Thurstone Design Matrix generated above.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># Model with Thurstone D matrix</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="kw">system.time</span>({</a>
-<a class="sourceLine" id="cb5-3" title="3">  out_model_thurstone =<span class="st"> </span><span class="kw">cIRT</span>(</a>
-<a class="sourceLine" id="cb5-4" title="4">    choice_matrix[, <span class="st">&#39;subject_id&#39;</span>],</a>
-<a class="sourceLine" id="cb5-5" title="5">    <span class="kw">cbind</span>(fixed_effects[, <span class="dv">-1</span>], D_easy, D_hard),</a>
-<a class="sourceLine" id="cb5-6" title="6">    <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(fixed_effects)),</a>
-<a class="sourceLine" id="cb5-7" title="7">    <span class="kw">as.matrix</span>(fixed_effects),</a>
-<a class="sourceLine" id="cb5-8" title="8">    <span class="kw">as.matrix</span>(trial_matrix),</a>
-<a class="sourceLine" id="cb5-9" title="9">    choice_matrix[, <span class="st">&#39;choose_hard_q&#39;</span>],</a>
-<a class="sourceLine" id="cb5-10" title="10">    <span class="dv">20000</span>,</a>
-<a class="sourceLine" id="cb5-11" title="11">    <span class="dv">25000</span></a>
-<a class="sourceLine" id="cb5-12" title="12">  )</a>
-<a class="sourceLine" id="cb5-13" title="13">})</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Model with Thurstone D matrix</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">system.time</span>({</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  out_model_thurstone =<span class="st"> </span><span class="kw">cIRT</span>(</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    choice_matrix[, <span class="st">&#39;subject_id&#39;</span>],</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="kw">cbind</span>(fixed_effects[, <span class="dv">-1</span>], D_easy, D_hard),</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(fixed_effects)),</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    <span class="kw">as.matrix</span>(fixed_effects),</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    <span class="kw">as.matrix</span>(trial_matrix),</span>
+<span id="cb5-9"><a href="#cb5-9"></a>    choice_matrix[, <span class="st">&#39;choose_hard_q&#39;</span>],</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    <span class="dv">20000</span>,</span>
+<span id="cb5-11"><a href="#cb5-11"></a>    <span class="dv">25000</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>  )</span>
+<span id="cb5-13"><a href="#cb5-13"></a>})</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-## 528.191  21.809 209.115</code></pre>
+## 527.800  15.473 199.257</code></pre>
 <p>We recommend saving the model object as a <code>.rda</code> file even though the total computational time is less than 2.5 minutes.</p>
 <pre><code>## Save model output to an rda file.
 # save(out_model_thurstone, file=&#39;choiceMCMCoutput.rda&#39;)
@@ -368,119 +383,121 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="parameter-estimates" class="section level1">
 <h1>Parameter Estimates</h1>
 <p>Next up, we obtain the parameter estimates of the model by averaging over the different estimates obtained via the Gibbs sampling technique employed.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">vlabels_thurstone =<span class="st"> </span><span class="kw">colnames</span>(<span class="kw">cbind</span>(fixed_effects[, <span class="dv">-1</span>], D_easy, D_hard))</a>
-<a class="sourceLine" id="cb8-2" title="2"></a>
-<a class="sourceLine" id="cb8-3" title="3">G_thurstone =<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(</a>
-<a class="sourceLine" id="cb8-4" title="4">  out_model_thurstone<span class="op">$</span>gs0,</a>
-<a class="sourceLine" id="cb8-5" title="5">  <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb8-6" title="6">  <span class="dt">FUN =</span> quantile,</a>
-<a class="sourceLine" id="cb8-7" title="7">  <span class="dt">probs =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">.025</span>, <span class="fl">.975</span>)</a>
-<a class="sourceLine" id="cb8-8" title="8">))</a>
-<a class="sourceLine" id="cb8-9" title="9"><span class="kw">rownames</span>(G_thurstone) =<span class="st"> </span>vlabels_thurstone</a>
-<a class="sourceLine" id="cb8-10" title="10"></a>
-<a class="sourceLine" id="cb8-11" title="11">B_thurstone =<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(</a>
-<a class="sourceLine" id="cb8-12" title="12">  out_model_thurstone<span class="op">$</span>beta,</a>
-<a class="sourceLine" id="cb8-13" title="13">  <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb8-14" title="14">  <span class="dt">FUN =</span> quantile,</a>
-<a class="sourceLine" id="cb8-15" title="15">  <span class="dt">probs =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">0.025</span>, <span class="fl">.975</span>)</a>
-<a class="sourceLine" id="cb8-16" title="16">))</a>
-<a class="sourceLine" id="cb8-17" title="17"><span class="kw">rownames</span>(B_thurstone) =<span class="st"> </span><span class="kw">colnames</span>(fixed_effects)</a>
-<a class="sourceLine" id="cb8-18" title="18"></a>
-<a class="sourceLine" id="cb8-19" title="19">S_thurstone =<span class="st"> </span><span class="kw">solve</span>(</a>
-<a class="sourceLine" id="cb8-20" title="20">  <span class="kw">apply</span>(out_model_thurstone<span class="op">$</span>Sigma_zeta_inv, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">FUN =</span> mean)</a>
-<a class="sourceLine" id="cb8-21" title="21">)</a>
-<a class="sourceLine" id="cb8-22" title="22"></a>
-<a class="sourceLine" id="cb8-23" title="23">inv_sd =<span class="st"> </span><span class="kw">diag</span>(<span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">diag</span>(<span class="kw">solve</span>(</a>
-<a class="sourceLine" id="cb8-24" title="24">  <span class="kw">apply</span>(out_model_thurstone<span class="op">$</span>Sigma_zeta_inv, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">FUN =</span> mean)</a>
-<a class="sourceLine" id="cb8-25" title="25">))))</a>
-<a class="sourceLine" id="cb8-26" title="26"></a>
-<a class="sourceLine" id="cb8-27" title="27">corrmat =<span class="st"> </span>inv_sd <span class="op">%*%</span><span class="st"> </span>S_thurstone <span class="op">%*%</span><span class="st"> </span>inv_sd</a>
-<a class="sourceLine" id="cb8-28" title="28">as =<span class="st"> </span><span class="kw">apply</span>(out_model_thurstone<span class="op">$</span>as, <span class="dv">2</span>, <span class="dt">FUN =</span> mean)</a>
-<a class="sourceLine" id="cb8-29" title="29">bs =<span class="st"> </span><span class="kw">apply</span>(out_model_thurstone<span class="op">$</span>bs, <span class="dv">2</span>, <span class="dt">FUN =</span> mean)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>vlabels_thurstone =<span class="st"> </span><span class="kw">colnames</span>(<span class="kw">cbind</span>(fixed_effects[, <span class="dv">-1</span>], D_easy, D_hard))</span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a>G_thurstone =<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(</span>
+<span id="cb8-4"><a href="#cb8-4"></a>  out_model_thurstone<span class="op">$</span>gs0,</span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="dv">2</span>,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="dt">FUN =</span> quantile,</span>
+<span id="cb8-7"><a href="#cb8-7"></a>  <span class="dt">probs =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">.025</span>, <span class="fl">.975</span>)</span>
+<span id="cb8-8"><a href="#cb8-8"></a>))</span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="kw">rownames</span>(G_thurstone) =<span class="st"> </span>vlabels_thurstone</span>
+<span id="cb8-10"><a href="#cb8-10"></a></span>
+<span id="cb8-11"><a href="#cb8-11"></a>B_thurstone =<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(</span>
+<span id="cb8-12"><a href="#cb8-12"></a>  out_model_thurstone<span class="op">$</span>beta,</span>
+<span id="cb8-13"><a href="#cb8-13"></a>  <span class="dv">2</span>,</span>
+<span id="cb8-14"><a href="#cb8-14"></a>  <span class="dt">FUN =</span> quantile,</span>
+<span id="cb8-15"><a href="#cb8-15"></a>  <span class="dt">probs =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">0.025</span>, <span class="fl">.975</span>)</span>
+<span id="cb8-16"><a href="#cb8-16"></a>))</span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="kw">rownames</span>(B_thurstone) =<span class="st"> </span><span class="kw">colnames</span>(fixed_effects)</span>
+<span id="cb8-18"><a href="#cb8-18"></a></span>
+<span id="cb8-19"><a href="#cb8-19"></a>S_thurstone =<span class="st"> </span><span class="kw">solve</span>(</span>
+<span id="cb8-20"><a href="#cb8-20"></a>  <span class="kw">apply</span>(out_model_thurstone<span class="op">$</span>Sigma_zeta_inv, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">FUN =</span> mean)</span>
+<span id="cb8-21"><a href="#cb8-21"></a>)</span>
+<span id="cb8-22"><a href="#cb8-22"></a></span>
+<span id="cb8-23"><a href="#cb8-23"></a>inv_sd =<span class="st"> </span><span class="kw">diag</span>(<span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">diag</span>(<span class="kw">solve</span>(</span>
+<span id="cb8-24"><a href="#cb8-24"></a>  <span class="kw">apply</span>(out_model_thurstone<span class="op">$</span>Sigma_zeta_inv, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">FUN =</span> mean)</span>
+<span id="cb8-25"><a href="#cb8-25"></a>))))</span>
+<span id="cb8-26"><a href="#cb8-26"></a></span>
+<span id="cb8-27"><a href="#cb8-27"></a>corrmat =<span class="st"> </span>inv_sd <span class="op">%*%</span><span class="st"> </span>S_thurstone <span class="op">%*%</span><span class="st"> </span>inv_sd</span>
+<span id="cb8-28"><a href="#cb8-28"></a>as =<span class="st"> </span><span class="kw">apply</span>(out_model_thurstone<span class="op">$</span>as, <span class="dv">2</span>, <span class="dt">FUN =</span> mean)</span>
+<span id="cb8-29"><a href="#cb8-29"></a>bs =<span class="st"> </span><span class="kw">apply</span>(out_model_thurstone<span class="op">$</span>bs, <span class="dv">2</span>, <span class="dt">FUN =</span> mean)</span></code></pre></div>
 <p>Thus, we have the following results:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># gs0</span></a>
-<a class="sourceLine" id="cb9-2" title="2">G_thurstone</a></code></pre></div>
-<pre><code>##                               50%        2.5%       97.5%
-## high1                -0.013007381 -0.11649911  0.09237427
-## high2                -0.080640910 -0.18620308  0.02465449
-## high3                 0.130739556  0.02645065  0.23530253
-## high4                 0.155280402  0.04694889  0.26785141
-## low1                  0.003050281 -0.07510764  0.08167656
-## low2                  0.088377665  0.00852674  0.16767355
-## factor(easy_items)1  -0.259995871 -0.53682779  0.02339009
-## factor(easy_items)2  -0.365881671 -0.64696614 -0.08507883
-## factor(easy_items)3  -0.242667447 -0.53300771  0.03920853
-## factor(easy_items)4  -0.403548032 -0.68014933 -0.12366985
-## factor(easy_items)5  -0.201484341 -0.49248979  0.08187158
-## factor(easy_items)6  -0.447377650 -0.73395983 -0.16080412
-## factor(easy_items)7  -0.297020511 -0.57919141 -0.01407502
-## factor(easy_items)8   0.057461691 -0.21530456  0.33240632
-## factor(easy_items)9  -0.370218095 -0.65026303 -0.09044450
-## factor(easy_items)10 -0.030477281 -0.31406303  0.24671553
-## factor(easy_items)11 -0.295911404 -0.57602552 -0.01913834
-## factor(easy_items)12  0.039493947 -0.23632643  0.31592433
-## factor(easy_items)13 -0.263025762 -0.54493217  0.01821651
-## factor(easy_items)14 -0.511403305 -0.79152555 -0.23233303
-## factor(easy_items)15 -0.093134324 -0.36932187  0.18445587
-## factor(hard_items)16 -0.519199711 -0.78834872 -0.25094225
-## factor(hard_items)17 -0.568755857 -0.83522771 -0.30417053
-## factor(hard_items)18 -1.394677228 -1.68237126 -1.10696340
-## factor(hard_items)19 -0.205449449 -0.47770942  0.05912963
-## factor(hard_items)21 -0.715184942 -0.98818399 -0.44750954
-## factor(hard_items)22 -0.246134338 -0.51455805  0.01942279
-## factor(hard_items)23 -0.217456363 -0.47947937  0.04565794
-## factor(hard_items)24 -1.204441032 -1.48820355 -0.92350059
-## factor(hard_items)26 -0.152078698 -0.41536209  0.11475679
-## factor(hard_items)27 -0.251365192 -0.51351520  0.01552899
-## factor(hard_items)28  0.374306463  0.10266065  0.64497501
-## factor(hard_items)29  0.758973934  0.47854102  1.03654502</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># betas</span></a>
-<a class="sourceLine" id="cb11-2" title="2">B_thurstone</a></code></pre></div>
-<pre><code>##                      50%        2.5%       97.5%
-## (Intercept)  0.695857902  0.56731497  0.83441591
-## high1       -0.113356977 -0.23712371  0.01747912
-## high2       -0.001369253 -0.12962189  0.12644935
-## high3        0.037862089 -0.09212260  0.17488984
-## high4        0.098221782 -0.03712873  0.24958268
-## low1         0.019553947 -0.07627057  0.12094267
-## low2        -0.114704466 -0.21128512 -0.02001040</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># Sigma Thurstone</span></a>
-<a class="sourceLine" id="cb13-2" title="2">S_thurstone</a></code></pre></div>
-<pre><code>##              [,1]         [,2]         [,3]         [,4]         [,5]
-## [1,]  0.388141169 -0.007701543  0.011086341  0.002620267 -0.015912056
-## [2,] -0.007701543  0.079309568 -0.011237415 -0.003313970 -0.026065211
-## [3,]  0.011086341 -0.011237415  0.063866175 -0.007597972 -0.007074089
-## [4,]  0.002620267 -0.003313970 -0.007597972  0.062326732 -0.007947994
-## [5,] -0.015912056 -0.026065211 -0.007074089 -0.007947994  0.085608011
-## [6,] -0.013927986  0.005649260 -0.002971341 -0.005644137  0.001818345
-## [7,] -0.014520890 -0.006773864  0.002205729  0.003819246  0.006170039
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># gs0</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>G_thurstone</span></code></pre></div>
+<pre><code>##                               50%         2.5%        97.5%
+## high1                -0.011918521 -0.119695477  0.094447843
+## high2                -0.079570501 -0.186099637  0.024965671
+## high3                 0.129292197  0.025228080  0.234542640
+## high4                 0.153448677  0.045520515  0.264337226
+## low1                  0.003210044 -0.075426710  0.080879722
+## low2                  0.087701911  0.008032731  0.166752576
+## factor(easy_items)1  -0.259494972 -0.537258649  0.023440853
+## factor(easy_items)2  -0.362345642 -0.644583547 -0.086659079
+## factor(easy_items)3  -0.245548255 -0.531081995  0.042224936
+## factor(easy_items)4  -0.401911958 -0.676954796 -0.128225271
+## factor(easy_items)5  -0.200390247 -0.490904342  0.083792252
+## factor(easy_items)6  -0.446215749 -0.726449559 -0.165510476
+## factor(easy_items)7  -0.296910735 -0.580692267 -0.012710619
+## factor(easy_items)8   0.059026103 -0.213017667  0.332016188
+## factor(easy_items)9  -0.367567741 -0.649136351 -0.089855891
+## factor(easy_items)10 -0.032011324 -0.315127942  0.248586068
+## factor(easy_items)11 -0.293030978 -0.572501843 -0.016232998
+## factor(easy_items)12  0.040078213 -0.232261355  0.314206677
+## factor(easy_items)13 -0.263199369 -0.546667545  0.026247544
+## factor(easy_items)14 -0.511820426 -0.783039288 -0.234808422
+## factor(easy_items)15 -0.090574822 -0.369644512  0.189347834
+## factor(hard_items)16 -0.520670030 -0.787049170 -0.253456164
+## factor(hard_items)17 -0.570967488 -0.838647760 -0.304769731
+## factor(hard_items)18 -1.388964230 -1.678334878 -1.102851260
+## factor(hard_items)19 -0.209180587 -0.473495665  0.058674674
+## factor(hard_items)21 -0.718009239 -0.989013701 -0.447899425
+## factor(hard_items)22 -0.249037297 -0.514065356  0.012342937
+## factor(hard_items)23 -0.221054366 -0.485034854  0.041676486
+## factor(hard_items)24 -1.203186023 -1.490363406 -0.922867461
+## factor(hard_items)26 -0.149945933 -0.417055716  0.107122428
+## factor(hard_items)27 -0.250510742 -0.514155859  0.008564357
+## factor(hard_items)28  0.372547251  0.104567986  0.643045702
+## factor(hard_items)29  0.755592554  0.481912487  1.037038840</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># betas</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>B_thurstone</span></code></pre></div>
+<pre><code>##                       50%        2.5%       97.5%
+## (Intercept)  0.6941869367  0.56572781  0.83188128
+## high1       -0.1091561295 -0.23665856  0.02226477
+## high2       -0.0002430729 -0.13446765  0.13366267
+## high3        0.0383768147 -0.09136654  0.17208491
+## high4        0.0988573976 -0.03960340  0.24704211
+## low1         0.0210005947 -0.08038254  0.12057481
+## low2        -0.1138504542 -0.21008888 -0.01833665</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Sigma Thurstone</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>S_thurstone</span></code></pre></div>
+<pre><code>##               [,1]         [,2]         [,3]          [,4]         [,5]
+## [1,]  0.3843530385 -0.004662923  0.011692464 -0.0009322134 -0.015441431
+## [2,] -0.0046629230  0.078108041 -0.011706925 -0.0028135267 -0.025283494
+## [3,]  0.0116924640 -0.011706925  0.064257975 -0.0077189074 -0.007373885
+## [4,] -0.0009322134 -0.002813527 -0.007718907  0.0621964166 -0.008210645
+## [5,] -0.0154414310 -0.025283494 -0.007373885 -0.0082106449  0.084898090
+## [6,] -0.0144626652  0.006052978 -0.002809177 -0.0057908010  0.001550554
+## [7,] -0.0139357563 -0.007130516  0.001634419  0.0044327719  0.005680757
 ##              [,6]         [,7]
-## [1,] -0.013927986 -0.014520890
-## [2,]  0.005649260 -0.006773864
-## [3,] -0.002971341  0.002205729
-## [4,] -0.005644137  0.003819246
-## [5,]  0.001818345  0.006170039
-## [6,]  0.065844146 -0.014214435
-## [7,] -0.014214435  0.062680767</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">## Item parameters ----</span></a>
-<a class="sourceLine" id="cb15-2" title="2"></a>
-<a class="sourceLine" id="cb15-3" title="3"><span class="co"># a</span></a>
-<a class="sourceLine" id="cb15-4" title="4">as</a></code></pre></div>
-<pre><code>##  [1] 0.6302647 0.5001920 1.1327765 0.3214242 1.0053339 1.0773294 0.8159113
-##  [8] 0.3740175 0.8232388 0.7489221 0.6180568 1.2159318 0.8386133 0.9735391
-## [15] 0.7977364 1.0137514 0.7096209 0.5876114 0.9516583 1.0765460 1.0113507
-## [22] 0.6635219 0.6329608 0.5826747 0.6127090 0.6125380 0.6674484 0.7950723
-## [29] 0.5060977 0.6401736</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># b</span></a>
-<a class="sourceLine" id="cb17-2" title="2">bs</a></code></pre></div>
-<pre><code>##  [1] -1.13722697 -1.15968556 -1.53247666 -0.88685920 -1.00956415
-##  [6] -0.93710043 -0.83889608 -0.43353362 -0.47517859 -0.75048808
-## [11] -0.69207098 -0.59811747 -0.66410476 -0.48805647 -0.30298252
-## [16] -0.59009250 -0.49750088 -0.26613268 -0.43177542 -0.52862807
-## [21] -0.32202090 -0.30733136 -0.40318795 -0.22526379 -0.06107927
-## [26]  0.06681751 -0.31640988  0.13199939  0.48978626  0.92930109</code></pre>
+## [1,] -0.014462665 -0.013935756
+## [2,]  0.006052978 -0.007130516
+## [3,] -0.002809177  0.001634419
+## [4,] -0.005790801  0.004432772
+## [5,]  0.001550554  0.005680757
+## [6,]  0.064934352 -0.013505876
+## [7,] -0.013505876  0.062034019</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">## Item parameters ----</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co"># a</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>as</span></code></pre></div>
+<pre><code>##  [1] 0.6330024 0.5008381 1.1490599 0.3218549 1.0052554 1.0806787 0.8224989
+##  [8] 0.3742268 0.8203523 0.7445696 0.6209848 1.2078615 0.8397576 0.9691163
+## [15] 0.7971580 1.0132158 0.7091603 0.5871607 0.9463384 1.0805291 1.0074341
+## [22] 0.6601618 0.6351331 0.5800470 0.6118395 0.6169638 0.6673596 0.7935111
+## [29] 0.5036128 0.6386701</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># b</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>bs</span></code></pre></div>
+<pre><code>##  [1] -1.14223877 -1.16068518 -1.55175045 -0.88578115 -1.01023449 -0.94113036
+##  [7] -0.84593364 -0.43485919 -0.47865235 -0.75026469 -0.69551719 -0.59958549
+## [13] -0.66773457 -0.48720142 -0.30473840 -0.59066144 -0.49703602 -0.26797644
+## [19] -0.43399840 -0.53070441 -0.32576907 -0.30796324 -0.40416069 -0.22660229
+## [25] -0.06279663  0.06318500 -0.31772974  0.13072993  0.48966367  0.92771608</code></pre>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
