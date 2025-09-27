@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2022-02-21" />
+<meta name="date" content="2025-09-26" />
 
 <title>Package Overview</title>
 
@@ -30,13 +30,14 @@ document.addEventListener('DOMContentLoaded', function(e) {
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
 
 
 
@@ -236,33 +237,62 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Package Overview</h1>
-<h4 class="date">2022-02-21</h4>
+<h4 class="date">2025-09-26</h4>
 
 
 
 <div id="intro" class="section level1">
 <h1>Intro</h1>
-<p>The package is a companion to the paper “A hierarchical model for accuracy and choice on standardized tests” in <a href="https://link.springer.com/article/10.1007/s11336-015-9484-7">Psychometrika</a> written by Culpepper, S. A. &amp; Balamuta, J. J. Within this package, we make available the code used for the analysis within the paper as well as the data.</p>
+<p>The package is a companion to the paper “A hierarchical model for
+accuracy and choice on standardized tests” in <a href="https://link.springer.com/article/10.1007/s11336-015-9484-7">Psychometrika</a>
+written by Culpepper, S. A. &amp; Balamuta, J. J. Within this package,
+we make available the code used for the analysis within the paper as
+well as the data.</p>
 </div>
 <div id="functions" class="section level1">
 <h1>Functions</h1>
-<p>The package provides C++ implementations of the hierarchical bayesian modeling framework for choice. The primary functions that are novel contributions to psychometric literature are the <code>probitHLM()</code> and <code>TwoPLChoicemcmc()</code> that respectively provide a choice inclusive Probit HLM and a Two Parameter Ogive Model and are called by an overall wrapper function <code>cIRT()</code>. These functions do have an overall dependency on other components that have also been coded within C++ and may benefit a practitioner seeking to do use the same functionality elsewhere.</p>
+<p>The package provides C++ implementations of the hierarchical bayesian
+modeling framework for choice. The primary functions that are novel
+contributions to psychometric literature are the
+<code>probitHLM()</code> and <code>TwoPLChoicemcmc()</code> that
+respectively provide a choice inclusive Probit HLM and a Two Parameter
+Ogive Model and are called by an overall wrapper function
+<code>cIRT()</code>. These functions do have an overall dependency on
+other components that have also been coded within C++ and may benefit a
+practitioner seeking to do use the same functionality elsewhere.</p>
 <ul>
-<li>Random Number Generation for the following distributions: Wishart <code>rwishart()</code>, Inverse Wishart <code>riwishart()</code>, and Multivariate Normal <code>rmvnorm()</code>.</li>
+<li>Random Number Generation for the following distributions: Wishart
+<code>rwishart()</code>, Inverse Wishart <code>riwishart()</code>, and
+Multivariate Normal <code>rmvnorm()</code>.</li>
 <li>Matrix Centering <code>center_matrix()</code></li>
 <li>Direct Sum calculation <code>direct_sum()</code></li>
-<li>Generation of Observed Data from Choice Model <code>Generate_Choice()</code></li>
+<li>Generation of Observed Data from Choice Model
+<code>Generate_Choice()</code></li>
 <li>Tabulate Total Scores <code>Total_Tabulate()</code>.</li>
 </ul>
 </div>
 <div id="data" class="section level1">
 <h1>Data</h1>
-<p>Over the course of Spring and Fall 2014, we deployed a testing client based on the Revised Purdue Spatial Visualization Test (Revised PSVT:R) by Yoon, 2011 within an experimental psychology lab. Subjects were presented individual questions that challenged their spatial reasoning. The question pairings were generating by bracketing different levels of difficulty together. The paper provides more details on the pairing generation. After the pair was answered individually, it was then presented to the student so that they could select the item they believe was corrected. We include the data that was collected from the students as follows:</p>
+<p>Over the course of Spring and Fall 2014, we deployed a testing client
+based on the Revised Purdue Spatial Visualization Test (Revised PSVT:R)
+by Yoon, 2011 within an experimental psychology lab. Subjects were
+presented individual questions that challenged their spatial reasoning.
+The question pairings were generating by bracketing different levels of
+difficulty together. The paper provides more details on the pairing
+generation. After the pair was answered individually, it was then
+presented to the student so that they could select the item they believe
+was corrected. We include the data that was collected from the students
+as follows:</p>
 <ul>
-<li>Student Performance on Revised Purdue Spatial Visualization Test (Revised PSVT:R) by Yoon, 2011 are located in <code>trial_matrix</code></li>
-<li>The choices students made among items presented to them are in <code>choice_matrix</code></li>
-<li>The end payout results for students based on their choices are in <code>payout_matrix</code></li>
-<li>One additional data set exists containing the student’s sex response are in <code>survey_data</code></li>
+<li>Student Performance on Revised Purdue Spatial Visualization Test
+(Revised PSVT:R) by Yoon, 2011 are located in
+<code>trial_matrix</code></li>
+<li>The choices students made among items presented to them are in
+<code>choice_matrix</code></li>
+<li>The end payout results for students based on their choices are in
+<code>payout_matrix</code></li>
+<li>One additional data set exists containing the student’s sex response
+are in <code>survey_data</code></li>
 </ul>
 </div>
 
